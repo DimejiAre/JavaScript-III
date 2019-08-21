@@ -71,6 +71,56 @@
 
 */
 
+
+// TASK 1 SOLUTION
+function Person(name, age){
+  this.name = name;
+  this.age = age;
+  this.stomach = [];
+}
+Person.prototype.greet = function(){
+  return `Hi! My name is ${this.name} and i'm ${this.age} years old`;
+}
+Person.prototype.eat = function(food){
+  this.stomach.push(food);
+}
+Person.prototype.poop = function(){
+  this.stomach = [];
+}
+
+//TASK 1 TEST
+// let dimeji = new Person('Dimeji', 15)
+// console.log(dimeji.greet())
+// dimeji.eat('suya')
+// dimeji.eat('cake')
+// dimeji.eat('banana')
+// console.log(dimeji.stomach)
+// dimeji.poop()
+// console.log(dimeji.stomach)
+
+
+
+// TASK 2 SOLUTION
+function Car(modelName, make){
+  this.model = modelName;
+  this.make = make;
+  this.odometer = 0;
+  this.isCrashed = false;
+}
+Car.prototype.drive = function(distance){
+  if(this.isCrashed === false){
+    this.odometer += distance;
+  } else {
+    return `I crashed at ${this.odometer} miles!`
+  }
+}
+Car.prototype.crash = function(){
+  this.isCrashed = true;
+}
+Car.prototype.repair = function(){
+  this.isCrashed = false;
+}
+
 /*
 
   STRETCH TASK
