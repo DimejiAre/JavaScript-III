@@ -71,6 +71,110 @@
 
 */
 
+
+// TASK 1 SOLUTION
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = [];
+}
+Person.prototype.greet = function () {
+  return `Hi! My name is ${this.name} and i'm ${this.age} years old`;
+}
+Person.prototype.eat = function (food) {
+  this.stomach.push(food);
+}
+Person.prototype.poop = function () {
+  this.stomach = [];
+}
+
+//TASK 1 TEST
+// let dimeji = new Person('Dimeji', 15)
+// console.log(dimeji.greet())
+// dimeji.eat('suya')
+// dimeji.eat('cake')
+// dimeji.eat('banana')
+// console.log(dimeji.stomach)
+// dimeji.poop()
+// console.log(dimeji.stomach)
+
+
+
+// TASK 2 SOLUTION
+function Car(modelName, make) {
+  this.model = modelName;
+  this.make = make;
+  this.odometer = 0;
+  this.isCrashed = false;
+}
+Car.prototype.drive = function (distance) {
+  if (this.isCrashed === false) {
+    this.odometer += distance;
+  } else {
+    return `I crashed at ${this.odometer} miles!`
+  }
+}
+Car.prototype.crash = function () {
+  this.isCrashed = true;
+}
+Car.prototype.repair = function () {
+  this.isCrashed = false;
+}
+
+
+// TASK 3 SOLUTION
+function Baby(name, age) {
+  Person.call(this, name, age);
+}
+Baby.prototype = Object.create(Person.prototype);
+Baby.prototype.play = function () {
+  return "Yipeee!!!";
+}
+
+// TASK 4 SOLUTION
+function Shirt(make,color) {
+  this.color = color;
+  this.make = make;
+  this.isClean = true;
+  this.isIroned = true;
+  this.numOfWears = 0;
+  this.inGoodCondition = true;
+}
+Shirt.prototype.wash = function () {
+  if (this.isClean) {
+    return "It is already clean";
+  } else {
+    this.isClean = true;
+  }
+}
+Shirt.prototype.iron = function () {
+  if (this.isIroned) {
+    return "It is already ironed";
+  } else {
+    this.isIroned = true;
+  }
+}
+Shirt.prototype.wear = function () {
+  if (this.inGoodCondition) {
+    if (this.isClean && this.isIroned) {
+      this.numOfWears += 1;
+      this.isClean = false;
+      this.isIroned = false;
+      if(this.numOfWears > 10){
+        this.inGoodCondition = false;
+      }
+    }
+    else {
+      return "Make sure your shirt is washed and ironed";
+    }
+  } else {
+    return "You have to mend this shirt before you can wear it"
+  }
+}
+Shirt.prototype.mend = function(){
+  this.inGoodCondition = true;
+}
+
 /*
 
   STRETCH TASK
@@ -90,12 +194,30 @@
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
 
+function GameObject(data){
+  this.createdAt = data.createdAt;
+  this.name = data.name;
+  this.dimensions = data.dimensions;
+}
+GameObject.prototype.destroy = function (){
+  return `${this.name} was removed from the game.`;
+}
+
 /*
   === CharacterStats ===
   * healthPoints
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
+
+function CharacterStats(data){
+  GameObject.call(this,data);
+  this.healthPoints = data.healthPoints;
+}
+CharacterStats.prototype = Object.create(GameObject.prototype);
+CharacterStats.prototype.takeDamage = function(){
+  return `${this.name} took damage.`;
+}
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -107,6 +229,17 @@
   * should inherit takeDamage() from CharacterStats
 */
 
+function Humanoid(data){
+  CharacterStats.call(this,data);
+  this.team = data.team;
+  this.weapons = data.weapons;
+  this.language = data.language;
+}
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+Humanoid.prototype.greet = function(){
+  return `${this.name} offers a greeting in ${this.language}.`
+}
+
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -115,7 +248,6 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -173,4 +305,3 @@
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
